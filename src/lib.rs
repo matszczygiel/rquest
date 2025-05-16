@@ -290,7 +290,7 @@ mod error;
 mod into_url;
 mod response;
 
-pub use self::error::{Error, Result};
+pub use self::error::{BoxError, Error, Result};
 pub use self::into_url::IntoUrl;
 pub use self::response::ResponseBuilderExt;
 
@@ -332,11 +332,18 @@ pub use self::client::websocket::{
 };
 pub use self::client::{
     Body, Client, ClientBuilder, ClientUpdate, EmulationProvider, EmulationProviderFactory,
-    Http1Config, Http2Config, Request, RequestBuilder, Response, Upgraded,
+    Http1Config, Http2Config, Request, RequestBuilder, Response, Upgraded, apply_http1_config2,
+    apply_http2_config2,
 };
 pub use self::core::client::{Dst, Http1Builder, Http2Builder};
 pub use self::proxy::{NoProxy, Proxy};
 pub use self::tls::{AlpnProtos, AlpsProtos, CertStore, Identity, TlsConfig, TlsInfo, TlsVersion};
+pub use core::Response as CoreResponse;
+pub use core::body;
+pub use core::client::InnerRequest as CoreRequest;
+pub use core::client::InnerRequestBuilder as CoreRequestBuilder;
+pub use core::client::conn;
+pub use core::rt;
 
 pub use boring2::ssl::{CertCompressionAlgorithm, ExtensionType, SslCurve};
 pub use http2::frame::{Priority, PseudoOrder, SettingsOrder, StreamDependency, StreamId};

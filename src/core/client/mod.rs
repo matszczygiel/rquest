@@ -42,7 +42,7 @@ use common::{Exec, Lazy, lazy as hyper_lazy, timer};
 
 pub use dst::Dst;
 pub use network::{NetworkScheme, NetworkSchemeBuilder};
-pub use request::InnerRequest;
+pub use request::{InnerRequest, InnerRequestBuilder};
 
 type BoxSendFuture = Pin<Box<dyn Future<Output = ()> + Send>>;
 
@@ -926,6 +926,12 @@ impl DerefMut for Http1Builder<'_> {
     }
 }
 
+impl<'a> From<&'a mut crate::core::client::conn::http1::Builder> for Http1Builder<'a> {
+    fn from(inner: &'a mut crate::core::client::conn::http1::Builder) -> Self {
+        Self { inner }
+    }
+}
+
 /// Http2 part of builder.
 #[derive(Debug)]
 pub struct Http2Builder<'a> {
@@ -943,6 +949,12 @@ impl Deref for Http2Builder<'_> {
 impl DerefMut for Http2Builder<'_> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.inner
+    }
+}
+
+impl<'a> From<&'a mut crate::core::client::conn::http2::Builder<Exec>> for Http2Builder<'a> {
+    fn from(inner: &'a mut crate::core::client::conn::http2::Builder<Exec>) -> Self {
+        Self { inner }
     }
 }
 
@@ -972,8 +984,8 @@ pub struct Builder {
     client_config: Config,
     exec: Exec,
 
-    h1_builder: crate::core::client::conn::http1::Builder,
-    h2_builder: crate::core::client::conn::http2::Builder<Exec>,
+    pub h1_builder: crate::core::client::conn::http1::Builder,
+    pub h2_builder: crate::core::client::conn::http2::Builder<Exec>,
     pool_config: pool::Config,
     pool_timer: Option<timer::Timer>,
 }

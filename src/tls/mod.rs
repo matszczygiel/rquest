@@ -9,12 +9,13 @@ mod config;
 mod conn;
 mod x509;
 
-pub(crate) use self::conn::{HttpsConnector, MaybeHttpsStream, TlsConnector};
+pub(crate) use self::conn::{HttpsConnector, MaybeHttpsStream};
 pub use self::{
     config::TlsConfig,
     x509::{CertStore, CertStoreBuilder, Certificate, CertificateInput, Identity},
 };
 use boring2::ssl::SslVersion;
+pub use conn::TlsConnector;
 
 /// A TLS protocol version.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -16,7 +16,8 @@ pub struct Error {
     inner: Box<Inner>,
 }
 
-pub(crate) type BoxError = Box<dyn StdError + Send + Sync>;
+/// boxed error
+pub type BoxError = Box<dyn StdError + Send + Sync>;
 
 struct Inner {
     kind: Kind,

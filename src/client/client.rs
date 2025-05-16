@@ -28,7 +28,7 @@ use crate::error::{BoxError, Error};
 use crate::into_url::try_uri;
 use crate::proxy::IntoProxy;
 use crate::tls::CertificateInput;
-use crate::{CertStore, Http1Config, Http2Config, Identity, TlsConfig, error};
+use crate::{CertStore, Http1Config, Http2Config, Identity, TlsConfig, conn, error};
 use crate::{IntoUrl, Method, Proxy, StatusCode, Url};
 use crate::{
     redirect,
@@ -2457,7 +2457,12 @@ fn add_accpet_encoding_header(accepts: &Accepts, headers: &mut HeaderMap) {
     }
 }
 
-fn apply_http1_config(mut builder: Http1Builder<'_>, http1: Http1Config) {
+pub fn apply_http1_config(mut builder: Http1Builder<'_>, http1: Http1Config) {
+    apply_http1_config2(&mut builder, http1);
+}
+
+/// Apply http1 config
+pub fn apply_http1_config2(builder: &mut conn::http1::Builder, http1: Http1Config) {
     builder
         .http09_responses(http1.http09_responses)
         .max_headers(http1.max_headers)
@@ -2479,6 +2484,11 @@ fn apply_http1_config(mut builder: Http1Builder<'_>, http1: Http1Config) {
 }
 
 fn apply_http2_config(mut builder: Http2Builder<'_>, http2: Http2Config) {
+    apply_http2_config2(&mut builder, http2);
+}
+
+/// Apply http2 config
+pub fn apply_http2_config2<T: Clone>(builder: &mut conn::http2::Builder<T>, http2: Http2Config) {
     builder
         .initial_stream_id(http2.initial_stream_id)
         .initial_stream_window_size(http2.initial_stream_window_size)

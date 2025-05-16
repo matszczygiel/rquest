@@ -103,7 +103,8 @@ where
     B::Data: Send,
     B::Error: Into<BoxError>,
 {
-    builder: Builder,
+    /// HTTP builder
+    pub builder: Builder,
     version: Option<Version>,
     network_scheme: NetworkScheme,
     headers_order: Option<&'a [HeaderName]>,
@@ -262,6 +263,11 @@ where
             version: self.version,
             network_scheme: self.network_scheme,
         })
+    }
+
+    /// Get header map
+    pub fn headers_mut(&mut self) -> Option<&mut HeaderMap> {
+        self.builder.headers_mut()
     }
 }
 

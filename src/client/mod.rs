@@ -1,5 +1,7 @@
 pub use self::body::Body;
-pub use self::client::{Client, ClientBuilder, ClientUpdate};
+pub use self::client::{
+    Client, ClientBuilder, ClientUpdate, apply_http1_config2, apply_http2_config2,
+};
 pub use self::config::{Http1Config, Http2Config};
 pub use self::emulation::{EmulationProvider, EmulationProviderFactory};
 pub use self::request::{Request, RequestBuilder};

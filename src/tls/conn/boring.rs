@@ -25,7 +25,7 @@ use tokio_boring2::SslStream;
 use tower_service::Service;
 
 use std::error::Error;
-use std::fmt::Debug;
+use std::fmt::{self, Debug};
 use std::fs::OpenOptions;
 use std::future::Future;
 use std::io::Write as IOWrite;
@@ -127,6 +127,12 @@ where
 #[derive(Clone)]
 pub struct TlsConnector {
     inner: Inner,
+}
+
+impl fmt::Debug for TlsConnector {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("TlsConnector").finish_non_exhaustive()
+    }
 }
 
 #[derive(Clone)]
@@ -310,6 +316,21 @@ impl TlsConnector {
                 skip_session_ticket: settings.skip_session_ticket,
             },
         }
+    }
+
+    /// Connects to the given URI using the given connection.
+    ///
+    /// This function is used to connect to the given URI using the given connection.
+    pub async fn connect<A>(
+        &self,
+        uri: &Uri,
+        host: &str,
+        conn: A,
+    ) -> Result<SslStream<TokioIo<A>>, BoxError>
+    where
+        A: Read + Write + Unpin + Send + Sync + Debug + 'static,
+    {
+        self.inner.connect(uri, host, conn).await
     }
 }
 

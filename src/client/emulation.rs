@@ -59,11 +59,16 @@ pub struct EmulationProviderBuilder {
 /// ```
 #[derive(Default, Debug)]
 pub struct EmulationProvider {
-    pub(crate) tls_config: Option<TlsConfig>,
-    pub(crate) http1_config: Option<Http1Config>,
-    pub(crate) http2_config: Option<Http2Config>,
-    pub(crate) default_headers: Option<HeaderMap>,
-    pub(crate) headers_order: Option<Cow<'static, [HeaderName]>>,
+    /// TLS config
+    pub tls_config: Option<TlsConfig>,
+    /// HTTP1 config
+    pub http1_config: Option<Http1Config>,
+    /// HTTP2 config
+    pub http2_config: Option<Http2Config>,
+    /// headers
+    pub default_headers: Option<HeaderMap>,
+    /// pseudo headers order
+    pub headers_order: Option<Cow<'static, [HeaderName]>>,
 }
 
 impl EmulationProviderBuilder {
